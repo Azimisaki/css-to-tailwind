@@ -62,7 +62,7 @@
       }
     ],
     "comma-dangle": ["error", "never"],
-    "space-before-function-paren": ["error", "never"],
+    "space-before-function-paren": ["warning", "never"],
     "no-var": "error",
     "prefer-const": "error"
   }

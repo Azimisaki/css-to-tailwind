@@ -1,6 +1,7 @@
 import Editor from '@monaco-editor/react'
+import Clipboard from 'clipboard'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import FlipMove from 'react-flip-move'
 import SimpleBar from 'simplebar-react'
 import SvgDark from '@/assets/svg/dark.svg'
@@ -17,6 +18,13 @@ function ResultSection(props: {
 }) {
   const { themeChange, isDarkTheme, computedResultVals, config, setConfig } = props
   const [configShow, setConfigShow] = useState<boolean>(false)
+  useEffect(() => {
+    document.addEventListener('copy', async (e: any) => {
+      const tex = await navigator.clipboard.readText()
+      const str = tex.replace(/\r\n/g, ' ')
+      navigator.clipboard.writeText(str)
+    })
+  }, [])
   return (
     <section className='font-[Consolas,_"Courier_New",_monospace] lgx:col-start-2 relative lgx:h-full max-lgx:h-1/2 overflow-y-auto text-[#111827] dark:text-[#abb2bf]'>
       <div className="absolute right-[16px] top-[16px] flex items-center">
@@ -102,7 +110,7 @@ function ResultSection(props: {
                   {it.selectorName} Result Code:{' '}
                 </span>
                 <FlipMove
-                  className="dark:bg-[#1e1e1e] bg-[#e8e8e8] dark:text-[#b5cea8] text-[#098658] rounded-[2px] pt-[6px] pr-[10px] pl-[2px] inline-flex flex-wrap"
+                  className="dark:bg-[#1e1e1e] bg-[#f7faf5] dark:text-[#b5cea8] text-[#098658] rounded-[2px] pt-[6px] pr-[10px] pl-[2px] inline-flex flex-wrap"
                   typeName="span"
                   enterAnimation="accordionHorizontal"
                   leaveAnimation="accordionHorizontal"
@@ -110,7 +118,7 @@ function ResultSection(props: {
                 >
                   {it.resultVal.map((v) => (
                     <span
-                      className="ml-[8px] h-[22px] inline-block overflow-hidden leading-[22px] mb-[6px]"
+                      className="ml-[8px] h-[22px] max-w-[90vw] lgx:max-w-[40vw] inline-block overflow-hidden text-ellipsis leading-[22px] mb-[6px] whitespace-nowrap"
                       key={v.id}
                     >
                       {v.val}

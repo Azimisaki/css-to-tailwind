@@ -15,7 +15,7 @@ const ePreventDefault = (e: KeyboardEvent) => {
 }
 
 const demoArray = getDemoArray(
-  'body {\nwidth: 100%;\nheight: 50%;\nmargin: 0 !important;\nbackground-color: transparent;\ntransform: translate(10px, -20px) scale(.5);↓\n\n.my-hover:hover {\nbottom: -33.3333%;\nbox-shadow: 10px 10px 5px #888888;↓\n\n.my-style {\nmargin: 0.25rem 0.5rem 0.75rem;\ndisplay: flex;\njustify-content: space-between;\nbackdrop-filter: blur(4px) contrast(1.5);↓\n\n@media (min-width: 1536px) {\n.my-media{\ndisplay: grid;\ngrid-auto-flow: row dense;'
+  'a {\n↓\n.b {\n↓'
 )
 
 export default function Home() {
@@ -159,7 +159,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    setIsDarkTheme((localStorage.theme ?? 'dark') === 'dark')
+    setIsDarkTheme((localStorage.theme ?? 'light') === 'dark')
     const c = localStorage.getItem('translator-config')
     c && setConfig(JSON.parse(c))
   }, [])
@@ -184,6 +184,9 @@ export default function Home() {
           onChange={handleChange}
           value={''}
           onMount={handleEditorDidMount}
+          loading={
+            <div className="text-[#111827] dark:text-[#abb2bf] text-[37px]">Loading...</div>
+          }
           options={{
             fontSize: 18
           }}

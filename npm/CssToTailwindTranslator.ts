@@ -187,6 +187,9 @@ const isColor = (str: string, joinLinearGradient = false) => {
 }
 
 const isUnit = (str: string) => {
+  if (str.length > 0) {
+    return true
+  }
   return [
     'em', 'ex', 'ch', 'rem', 'vw', 'vh', 'vmin', 'vmax',
     'cm', 'mm', 'in', 'pt', 'pc', 'px', 'min-content', 'max-content', 'fit-content',
@@ -452,18 +455,14 @@ const propertyMap: Map<string, Record<string, string> | ((val: string) => string
     'border',
     val => {
       val = val.replace(/\(.+?\)/, v => v.replace(/\s/g, ''))
-      const vals: string = val.split(' ').filter(v => v !== '').map(v => (isUnit(v) || isColor(v)) ? ({ 'transparent': 'border-transparent', 'currentColor': 'border-current', 'currentcolor': 'border-current' }[val] ?? `border-[${v}]`) : ((propertyMap.get('border-style') as Record<string, string>)[v] ?? '')).filter(v => v !== '').join(' ')
+      const vals: string = val.split(' ').filter(v => v !== '').map(v => (isUnit(v) || isColor(v)) ? ({ 'transparent': 'border-transparent', 'currentColor': 'border-current', 'currentcolor': 'border-current' }[val] ?? (propertyMap.get('border-style') as Record<string, string>)[v] ?? `border-[${v}]`) : ((propertyMap.get('border-style') as Record<string, string>)[v] ?? '')).filter(v => v !== '').join(' ')
       return vals
     }
   ],
   [
     'border-bottom',
     val => {
-      if (isUnit(val)) {
-        return `border-b-[${getCustomVal(val)}]`
-      } else {
-        return `[border-bottom:${getCustomVal(val)}]`
-      }
+      return `[border-bottom:${getCustomVal(val)}]`
     }
   ],
   [
@@ -525,11 +524,7 @@ const propertyMap: Map<string, Record<string, string> | ((val: string) => string
   [
     'border-left',
     val => {
-      if (isUnit(val)) {
-        return `border-l-[${getCustomVal(val)}]`
-      } else {
-        return `[border-left:${getCustomVal(val)}]`
-      }
+      return `[border-left:${getCustomVal(val)}]`
     }
   ],
   [
@@ -574,11 +569,7 @@ const propertyMap: Map<string, Record<string, string> | ((val: string) => string
   [
     'border-right',
     val => {
-      if (isUnit(val)) {
-        return `border-r-[${getCustomVal(val)}]`
-      } else {
-        return `[border-right:${getCustomVal(val)}]`
-      }
+      return `[border-right:${getCustomVal(val)}]`
     }
   ],
   [
@@ -606,11 +597,7 @@ const propertyMap: Map<string, Record<string, string> | ((val: string) => string
   [
     'border-top',
     val => {
-      if (isUnit(val)) {
-        return `border-t-[${getCustomVal(val)}]`
-      } else {
-        return `[border-top:${getCustomVal(val)}]`
-      }
+      return `[border-top:${getCustomVal(val)}]`
     }
   ],
   [
@@ -1595,8 +1582,8 @@ const propertyMap: Map<string, Record<string, string> | ((val: string) => string
     }
   ],
   [
-    'rotation',
-    val => (`[rotation:${getCustomVal(val)}]`)
+    'rotate',
+    val => (`[rotate:${getCustomVal(val)}]`)
   ],
   [
     'row-gap',
@@ -1886,7 +1873,7 @@ const propertyMap: Map<string, Record<string, string> | ((val: string) => string
         })
         return canUsePipeV ? pipeV : ''
       })
-      return canUse ? `transform ${[...new Set(res)].join(' ')}` : `[transform:${getCustomVal(val)}]`
+      return canUse ? `${[...new Set(res)].join(' ')}` : `[transform:${getCustomVal(val)}]`
     }
   ],
   [
@@ -2100,7 +2087,9 @@ let moreDefaultValuesMap: Record<string, Record<string, string>> = {
     'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace': 'font-mono',
   },
   'font-weight': {
-    "100": "font-thin", "200": "font-extralight", "300": "font-light", "400": "font-normal", "500": "font-medium", "600": "font-semibold", "700": "font-bold", "800": "font-extrabold", "900": "font-black"
+    "100": "font-thin", "200": "font-extralight", "300": "font-light", "400": "font-normal", "500": "font-medium", "600": "font-semibold", "700": "font-bold", "800": "font-extrabold", "900": "font-black",
+    "normal": "font-normal",
+    "bold": "font-bold",
   },
   'line-height': {
     "1": "leading-none", "2": "leading-loose", ".75rem": "leading-3", "1rem": "leading-4", "1.25rem": "leading-5", "1.5rem": "leading-6", "1.75rem": "leading-7", "2rem": "leading-8", "2.25rem": "leading-9", "2.5rem": "leading-10", "1.25": "leading-tight", "1.375": "leading-snug", "1.5": "leading-normal", "1.625": "leading-relaxed"
