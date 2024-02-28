@@ -97,18 +97,33 @@ function ResultSection(props: {
         >
           {computedResultVals.map((it) => (
             <div key={it.id}>
-              <button
-                className="dark:bg-[#41454e] bg-[#f6f6f7] [border:1px_solid_rgba(60,60,67,.29)] dark:[border:1px_solid_#1e1e1e] p-[8px_16px] font-bold text-[18px] cursor-pointer filter hover:brightness-105 active:enabled:brightness-95 rounded-[4px]"
-                onClick={() => {
-                  copyText(it.resultVal.map(v => v.val).join(' '))
-                }}
-              >
-                Copy {it.selectorName} Result Code
-              </button>
+              <div className="font-bold block mb-[8px]">
+                {it.selectorName}
+              </div>
+              <div className='flex flex-row items-center justify-start'>
+                <button
+                  className="dark:bg-[#41454e] bg-[#f6f6f7] [border:1px_solid_rgba(60,60,67,.29)] dark:[border:1px_solid_#1e1e1e] p-[8px_8px] font-bold text-[16px] cursor-pointer filter hover:brightness-105 active:enabled:brightness-95 rounded-[4px] mr-[8px]"
+                  onClick={() => {
+                    copyText(it.resultVal.map(v => v.val).join(' '))
+                  }}
+                >
+                  Copy
+                </button>
+                <button
+                  className="dark:bg-[#41454e] bg-[#f6f6f7] [border:1px_solid_rgba(60,60,67,.29)] dark:[border:1px_solid_#1e1e1e] p-[8px_8px] font-bold text-[16px] cursor-pointer filter hover:brightness-105 active:enabled:brightness-95 rounded-[4px]"
+                  onClick={() => {
+                    const str = it.resultVal.map(v => {
+                      if (v.val.startsWith('w-') || v.val.startsWith('h-')) { return '' }
+                      return v.val
+                    }
+                    ).join(' ')
+                    copyText(str)
+                  }}
+                >
+                  Rm w&h
+                </button>
+              </div>
               <p className="text-[18px] leading-[30px] mb-[16px] mt-[8px]">
-                <span className="font-bold block mb-[8px]">
-                  {it.selectorName} Result Code:{' '}
-                </span>
                 <FlipMove
                   className="dark:bg-[#1e1e1e] bg-[#f7faf5] dark:text-[#b5cea8] text-[#098658] rounded-[2px] pt-[6px] pr-[10px] pl-[2px] inline-flex flex-wrap"
                   typeName="span"
