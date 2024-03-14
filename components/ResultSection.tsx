@@ -113,10 +113,10 @@ function ResultSection(props: {
                   className="dark:bg-[#41454e] bg-[#f6f6f7] [border:1px_solid_rgba(60,60,67,.29)] dark:[border:1px_solid_#1e1e1e] p-[8px_8px] font-bold text-[16px] cursor-pointer filter hover:brightness-105 active:enabled:brightness-95 rounded-[4px]"
                   onClick={() => {
                     const str = it.resultVal.map(v => {
-                      if (v.val.startsWith('w-') || v.val.startsWith('h-')) { return '' }
+                      if (v.val.startsWith('w-') || v.val.startsWith('h-')) { return null }
                       return v.val
                     }
-                    ).join(' ')
+                    ).filter(Boolean).join(' ')
                     copyText(str)
                   }}
                 >
